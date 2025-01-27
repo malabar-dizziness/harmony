@@ -3,5 +3,5 @@
 (ns my.script)
 
 
-(defn main [& args]
+(defn -main [& args]
   (apply println "Hello from me!!!" args))
