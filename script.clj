@@ -1,6 +1,6 @@
 #!/usr/bin/env bb
 
-(require '[babashka.http-client :as http])
+;; (require '[babashka.http-client :as http])
 
 ;; (defn get-url [url]
 ;;   (println "Downloading url : " url)
@@ -22,4 +22,12 @@
 (prn "The current file is : "*file*)
 
 
-;; parsing
+;; parsing command line options
+
+(require '[babashka.cli :as cli])
+
+(def cli-options
+  {:port {:default 80 :coerce :long}
+   :help {:coerce :boolean}})
+
+(prn (cli/parse-opts *command-line-args* {:spec cli-options}))
