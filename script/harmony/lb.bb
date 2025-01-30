@@ -8,9 +8,18 @@
             Socket]))
 
 (defonce ^:private  backend-host "localhost")
-(defonce ^:private ports [1010 1011 1012 1013])
+
+;; Use an hahsmap and assign each port a number
+(def ^:private ports
+  {:0 :1010
+   :1 :1011
+   :2 :1012
+   :3 :1013})
+
+(defonce ^:private helper-number (atom 0))
 
 (defn forward->backend [port request-line headers]
+  (prn "log: The current port is : " port)
   (let [backend-socket (Socket. backend-host port)
         in (io/reader (.getInputStream backend-socket))
         out (io/writer (.getOutputStream backend-socket))]
@@ -23,6 +32,30 @@
     (let [response (slurp in)]
       (.close backend-socket)
       response)))
+
+(defn port-idx
+  [ports]
+  (let [port-count (count ports)
+         idx (rem @helper-number port-count)
+        _ (swap! helper-number inc)]
+    (keyword (str idx))))
+
+(defn health-check
+  "Takes a port and checks the health of the server at that port"
+  [port]
+  (let [health-check-socket (Socket. backend-host port)
+        in (io/reader (.getInputStream health-check-socket))
+        out (io/writer (.getOutputStream health-check-socket))]
+    (.write out "HEAD /health HTTP/1.1\r\n")
+    (.write out (str "Host: " (str backend-host ":" port) "\r\n"))
+    (.write out "\r\n")
+    (.flush out)
+    (let [request-line (.readLine in)
+          headers (loop [headers []]
+                    (let [line (.readLine in)]
+                      (if (or (nil? line) (str/blank? line))
+                        headers
+                        (recur (conj headers line)))))])))
 
 (defn handle-request [client-socket]
   (with-open [in (io/reader (.getInputStream client-socket))
@@ -38,8 +71,10 @@
       (println request-line)
       (doseq [header headers]
         (println header))
-      (println "Forwarding to the backend server")
-      (let [backend-response (forward->backend 1010 request-line headers)]
+      (let [current-port (parse-long (name ((port-idx ports) ports)))
+            _ (prn "The current port is : " current-port)
+            backend-response (forward->backend current-port request-line headers)]
+        (println "Forwarding to backend server on port : " current-port)
         (println "Response from the backend server"
                  backend-response)
         (.write out backend-response)
@@ -54,6 +89,7 @@
     ;; blocking way
       (let [client-socket (.accept server-socket)]
         (println "Client request accepted successfully")
+        ;; Handle the request in async
         (future (handle-request client-socket))))))
 
 (defn -main [& args]
