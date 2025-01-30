@@ -5,6 +5,13 @@
             [clojure.string :as str])
   (:import [java.net ServerSocket]))
 
+(defn get-port-from-file
+  [file]
+  (-> (last (str/split file #"/"))
+      (str/split #"_")
+      first
+      parse-long))
+
 (defn handle-request
   [client-socket]
   (with-open [in (io/reader (.getInputStream client-socket))
@@ -38,11 +45,11 @@
         (future (handle-request client-socket))))))
 
 
-(defn -main [& args]
-  (let [port (if (empty? args)
-               ;; Use port 80 by default
-               1010
-               (parse-long (first args)))]
+(let [port (try
+             (parse-long (first *command-line-args*))
+             (catch Exception ex
+               (prn "Usage: ./be.bb <port-number>")
+               (System/exit 0)))]
+  (do
+    (prn "The commandline args are : " *command-line-args*)
     (start-server port)))
-
-(-main)

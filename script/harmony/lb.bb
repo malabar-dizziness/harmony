@@ -7,11 +7,11 @@
             ServerSocket
             Socket]))
 
-(def backend-host "localhost")
-(def backend-port 1010)
+(defonce ^:private  backend-host "localhost")
+(defonce ^:private ports [1010 1011 1012 1013])
 
-(defn forward->backend [request-line headers]
-  (let [backend-socket (Socket. backend-host backend-port)
+(defn forward->backend [port request-line headers]
+  (let [backend-socket (Socket. backend-host port)
         in (io/reader (.getInputStream backend-socket))
         out (io/writer (.getOutputStream backend-socket))]
     (.write out (str request-line "\r\n"))
@@ -39,7 +39,7 @@
       (doseq [header headers]
         (println header))
       (println "Forwarding to the backend server")
-      (let [backend-response (forward->backend request-line headers)]
+      (let [backend-response (forward->backend 1010 request-line headers)]
         (println "Response from the backend server"
                  backend-response)
         (.write out backend-response)
