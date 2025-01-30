@@ -26,15 +26,22 @@ Start the load balancing server:
 
 This will start the load balancing server on port 80 by default
 
-To the backend server
+Now, start multiple backend server on port : 1010, 1011, 1012 and 1013
 
 #+BEGIN_SRC bash
   ./src/harmony/be.bb <port-number>
 #+End_SRC
 
-Start multiple backend server on port : 1010, 1011, 1012 and 1013
-
-
 NOTE: Currently load balancing server only checks and distribute request
 to backend servers running on port 1010, 1011, 1012, and 1013. This can
 be changed to make it dynmaic in the future.
+
+Make GET request on host: `127.0.0.1` and port `80`.
+
+#+BEGIN_SRC bash
+  curl http://localhost:80
+#+end_src
+
+
+The load balancer will now distribute the request each of these server
+using round robin algorithm
