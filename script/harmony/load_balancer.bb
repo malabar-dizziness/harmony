@@ -1,6 +1,6 @@
 #!/usr/bin/env bb
 
-(ns harmony.lb
+(ns harmony.load-balancer
   (:require [clojure.java.io :as io]
             [clojure.string :as str])
   (:import [java.net
