@@ -8,8 +8,6 @@
   ["github.com/sourcegraph/scip-go"
    "github.com/sourcegraph-testing/etcd"])
 
-
-
 (defn download-repo [output repo]
   (println "Downloading repositories")
   (let [repo-basename (last (string/split repo #"/"))
@@ -27,6 +25,7 @@
     (download-repo "scratch" repo)))
 
 (run)
+
 
 (comment
   (def repo (first repos))
