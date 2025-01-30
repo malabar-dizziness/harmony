@@ -15,7 +15,8 @@
                       (if (or (nil? line) (str/blank? line))
                         headers
                         (recur (conj headers line)))))]
-      (println "Recieved request from : " (.getInetAddress client-socket))
+      (println "Type of client socket is " (type client-socket))
+      (println "Recieved request from : " (.getLocalPort client-socket))
       (println request-line)
       (doseq [header headers]
         (println header))
@@ -40,7 +41,7 @@
 (defn -main [& args]
   (let [port (if (empty? args)
                ;; Use port 80 by default
-               80
+               1010
                (parse-long (first args)))]
     (start-server port)))
 
