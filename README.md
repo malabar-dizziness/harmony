@@ -1,5 +1,8 @@
 # harmony
 
+harmony is a load balancing server that distribute request based on the basic
+round robin scheduling algorithm
+
 Solution to - https://codingchallenges.fyi/challenges/challenge-load-balancer/
 
 
