@@ -13,3 +13,27 @@ Solution to - https://codingchallenges.fyi/challenges/challenge-load-balancer/
     Health check the servers.
     Handle a server going offline (failing a health check).
     Handle a server coming back online (passing a health check).
+
+
+** Usage
+
+Start the load balancing server:
+
+#+BEGIN_SRC bash
+  ./src/harmony/load_balancer.bb
+#+End_SRC
+
+This will start the load balancing server on port 80 by default
+
+To the backend server
+
+#+BEGIN_SRC bash
+  ./src/harmony/be.bb <port-number>
+#+End_SRC
+
+Start multiple backend server on port : 1010, 1011, 1012 and 1013
+
+
+NOTE: Currently load balancing server only checks and distribute request
+to backend servers running on port 1010, 1011, 1012, and 1013. This can
+be changed to make it dynmaic in the future.
