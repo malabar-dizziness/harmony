@@ -14,8 +14,7 @@
                     (let [line (.readLine in)]
                       (if (or (nil? line) (string/blank? line))
                         headers
-                        (recur (conj headers line)))))
-          _ (prn "log: " request-line)]
+                        (recur (conj headers line)))))]
       ;; send a simple http response
       (if (string/includes? request-line "HEAD /health")
         (do
@@ -54,5 +53,5 @@
                (prn "Usage: ./be.bb <port-number>")
                (System/exit 0)))]
   (do
-    (prn "The commandline args are : " *command-line-args*)
+    (prn "Setting up server...")
     (start-server port)))
