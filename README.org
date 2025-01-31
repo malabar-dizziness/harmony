@@ -63,6 +63,11 @@ Make GET request on host: `127.0.0.1` and port `80`.
   curl http://localhost:80
 #+end_src
 
+To play around start REPL at the project root directory
 
-The load balancer will now distribute the request each of these server
+#+BEGIN_SRC bash
+  bb nrepl-server 7888
+#+EDN_SRC
+
+The load balancer will distribute the request each of the servers
 using round robin algorithm
