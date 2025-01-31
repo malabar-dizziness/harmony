@@ -1,6 +1,8 @@
 #!/usr/bin/env bb
 
 (ns harmony.load-balancer
+  "This namespace contains the functions to start the load balancing
+  server"
   (:require [clojure.java.io :as io]
             [clojure.string :as str])
   (:import [java.net
@@ -35,7 +37,7 @@
 (defn port-idx
   [ports]
   (let [port-count (count ports)
-         idx (rem @helper-number port-count)
+        idx (rem @helper-number port-count)
         _ (swap! helper-number inc)]
     (keyword (str idx))))
 

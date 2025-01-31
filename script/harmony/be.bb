@@ -1,6 +1,8 @@
 #!/usr/bin/env bb
 
 (ns harmony.be
+  "This namespace contains functions to start the backend server. Also
+  responds to health check"
   (:require [clojure.java.io :as io]
             [clojure.string :as string])
   (:import [java.net ServerSocket]))
