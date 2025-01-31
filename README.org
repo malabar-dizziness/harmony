@@ -18,6 +18,25 @@ Solution to - https://codingchallenges.fyi/challenges/challenge-load-balancer/
 - Handle a server coming back online (passing a health check).
 
 
+** Demo
+
+[[file:/resources/demo.png]]
+
+The left planes of the tmux session are running backend server at port
+1010m 1011, 1012 and 1013 respectively
+
+The top right pane is running the load balancing server and the bottom
+one is calling the curl command on the load balancing server
+
+The backend server running on 1012 is purposefully stopped to test if
+the load balancer handles the servers being down situation.
+
+As you can see in the load balancing server's log, when the server was
+down, it promptly forwarded to the next port rather than giving status
+500 as the response
+
+
+
 ** Usage
 
 Start the load balancing server:
